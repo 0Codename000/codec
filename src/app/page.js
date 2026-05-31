@@ -65,22 +65,25 @@ export default function Home() {
   // =========================
 
   useEffect(() => {
+  const video = transitionRef.current;
+  if (!video) return;
 
-    const video = transitionRef.current;
+  const handleEnd = () => {
+    setScene("portfolio");
+  };
 
-    if (!video) return;
+  video.addEventListener("ended", handleEnd);
 
-    const handleEnd = () => {
-      setScene("portfolio");
-    };
+  // 🔥 BACKUP ANTI STUCK (WAJIB)
+  const fallback = setTimeout(() => {
+    setScene("portfolio");
+  }, 5000);
 
-    video.addEventListener("ended", handleEnd);
-
-    return () => {
-      video.removeEventListener("ended", handleEnd);
-    };
-
-  }, [scene]);
+  return () => {
+    video.removeEventListener("ended", handleEnd);
+    clearTimeout(fallback);
+  };
+}, []);
 
   return (
     <main className="bg-black text-white overflow-x-hidden">
