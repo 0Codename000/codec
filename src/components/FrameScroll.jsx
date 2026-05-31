@@ -7,7 +7,7 @@ export default function FrameScroll() {
   const imagesRef = useRef([]);
   const currentFrame = useRef(0);
 
-  const TOTAL_FRAMES = 451;
+  const TOTAL_FRAMES = 51;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -26,7 +26,14 @@ export default function FrameScroll() {
       img.src = `/frames/scroll_${frameNumber}.webp`;
       imagesRef.current.push(img);
     }
+    const firstImage = imagesRef.current[0];
 
+if (firstImage) {
+  firstImage.onload = () => {
+    draw(0);
+  };
+}
+    
     // ======================
     // DRAW FRAME
     // ======================
@@ -58,12 +65,18 @@ export default function FrameScroll() {
       draw(Math.floor(currentFrame.current));
     };
 
-    const animate = () => {
-      handleScroll();
-      requestAnimationFrame(animate);
-    };
+  let rafId;
 
-    animate();
+const animate = () => {
+  handleScroll();
+  rafId = requestAnimationFrame(animate);
+};
+
+animate();
+
+return () => {
+  cancelAnimationFrame(rafId);
+};
   }, []);
 
   return (
