@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/* =========================
+   ROOT
+========================= */
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+/* =========================
+   BASE RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   VIDEO FIX
+========================= */
+
+video {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* =========================
+   GLASS (AAA CINEMATIC)
+========================= */
+
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(35px);
+  -webkit-backdrop-filter: blur(35px);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 30px 120px rgba(0, 0, 0, 0.8),
+    0 0 120px rgba(255, 255, 255, 0.05);
+}
+
+/* =========================
+   CINEMATIC SHADOW
+========================= */
+
+.cinematic-shadow {
+  box-shadow:
+    0 30px 120px rgba(0, 0, 0, 0.7),
+    0 0 120px rgba(255, 255, 255, 0.05);
+}
+
+/* =========================
+   CURSOR GLOW (SAFE LAYER)
+========================= */
+
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 999px;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.12),
+    transparent 70%
+  );
+
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  z-index: 40;
+}
+
+/* =========================
+   FILM GRAIN (FIXED - NOT BLOCK UI)
+========================= */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  opacity: 0.012;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,0.15) 1px,
+      transparent 1px
+    );
+
+  background-size: 4px 4px;
+}
+
+/* =========================
+   SCROLLBAR (CINEMATIC)
+========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+/* =========================
+   SELECTION
+========================= */
+
+::selection {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+/* =========================
+   POPUP PRIORITY FIX (IMPORTANT)
+========================= */
+
+.z-popup {
+  z-index: 99999 !important;
+}
