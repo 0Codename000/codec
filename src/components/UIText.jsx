@@ -77,7 +77,7 @@ export default function UIText() {
             onClick={() => setPopup(null)}
           >
             <motion.div
-              className="absolute inset-0 bg-black/90 backdrop-blur-3xl"
+              className="absolute inset-0 bg-black/70 backdrop-blur-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -91,7 +91,7 @@ export default function UIText() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="absolute inset-0 bg-white/10 blur-3xl opacity-20" />
+              <div className="absolute inset-0 bg-white/10 blur-xl opacity-10" />
 
               <motion.h2
                 className="text-4xl font-black"

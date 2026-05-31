@@ -23,7 +23,7 @@ export default function FrameScroll() {
       const img = new Image();
       const frameNumber = String(i).padStart(6, "0");
 
-      img.src = `/frames/scroll_${frameNumber}.jpg`;
+      img.src = `/frames/scroll_${frameNumber}.webp`;
       imagesRef.current.push(img);
     }
 
