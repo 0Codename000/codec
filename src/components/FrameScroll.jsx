@@ -6,10 +6,13 @@ export default function FrameScroll() {
   const canvasRef = useRef(null);
   const imagesRef = useRef([]);
   const currentFrame = useRef(0);
+  const isReady = useRef(false);
+const lastValidFrame = useRef(null);
 
-  const TOTAL_FRAMES = 51;
+  const TOTAL_FRAMES = 451;
 
   useEffect(() => {
+    console.log("FrameScroll mounted");
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
@@ -19,13 +22,24 @@ export default function FrameScroll() {
     // ======================
     // PRELOAD FRAMES
     // ======================
-    for (let i = 1; i <= TOTAL_FRAMES; i++) {
-      const img = new Image();
-      const frameNumber = String(i).padStart(6, "0");
+   // LOAD FRAME PERTAMA DULU (WAJIB)
+const firstImg = new Image();
+firstImg.src = "/frames/scroll_000001.webp";
 
-      img.src = `/frames/scroll_${frameNumber}.webp`;
-      imagesRef.current.push(img);
-    }
+firstImg.onload = () => {
+  imagesRef.current[0] = firstImg;
+  isReady.current = true; // 🔥 INI KUNCI BIAR CANVAS NYALA
+  draw(0);
+};
+
+// LOAD SISANYA DI BELAKANG (TETAP ADA)
+for (let i = 2; i <= TOTAL_FRAMES; i++) {
+  const img = new Image();
+  const frameNumber = String(i).padStart(6, "0");
+
+  img.src = `/frames/scroll_${frameNumber}.webp`;
+  imagesRef.current[i - 1] = img;
+}
     const firstImage = imagesRef.current[0];
 
 if (firstImage) {
@@ -38,12 +52,21 @@ if (firstImage) {
     // DRAW FRAME
     // ======================
     const draw = (index) => {
-      const img = imagesRef.current[index];
-      if (!img || !img.complete) return;
+  const img = imagesRef.current[index];
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    };
+  if (img && img.complete && img.naturalWidth > 0) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    lastValidFrame.current = img; // simpan frame terakhir
+    return;
+  }
+
+  // kalau belum siap, pakai frame terakhir
+  if (lastValidFrame.current) {
+    ctx.drawImage(lastValidFrame.current, 0, 0);
+  }
+};
 
     // ======================
     // SCROLL CONTROL
@@ -68,8 +91,11 @@ if (firstImage) {
   let rafId;
 
 const animate = () => {
-  handleScroll();
   rafId = requestAnimationFrame(animate);
+
+  if (!isReady.current) return; // 🔥 STOP DULU JIKA BELUM SIAP
+
+  handleScroll();
 };
 
 animate();
